@@ -1,6 +1,6 @@
 # Karaoke Machine Website
 
-This website simulates an online karaoke machine. Users can choose from a database of songs to add/remove to a queue, which plays the current song displayed as a video on the screen.
+This is my final project for INFO 1998 - Trends in Web Development. This website simulates an online karaoke machine. Users can choose from a database of songs to add/remove to a queue, which plays the current song displayed as a video on the screen.
 
 # Credits
 
