@@ -21,8 +21,8 @@ let queue: queueEntry[] = [];
 // send sorted queue (min priority queue i.e. lowest priority first)
 // needed for updating gui
 app.get("/api/queue", (req, res) => {
-  const sortedQueue = [...queue].sort((a, b) => a.priority - b.priority);
-  res.json(sortedQueue);
+  //const sortedQueue = [...queue].sort((a, b) => a.priority - b.priority);
+  res.json(queue);
 })
 
 // search queue

@@ -97,6 +97,11 @@ button:active {
     margin-top: 2rem;
 }
 
+.icon-container {
+    width: 100%;
+    max-width: 100px;
+}
+
 ul {
     list-style: none;
     padding: 0;
@@ -153,16 +158,14 @@ li button:hover {
     box-shadow: 0 0 15px #3992ff;
 }
 
-.queue-list button {
-    font-family: "Tilt Neon";
+.icon-container button {
     color: #ff4250;
     border-color: #ff4250;
     box-shadow: 0 0 5px #ff4250;
 }
 
-.queue-list button:hover {
+.icon-container button:hover {
     background-color: #ff4250;
-    color: white;
     box-shadow: 0 0 15px #ff4250;
 }
 

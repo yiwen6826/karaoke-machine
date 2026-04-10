@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { CircleArrowUp } from 'lucide-react';
+import { CircleX } from 'lucide-react';
+import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
 
 const API_URL = "http://localhost:8080/api";
@@ -63,6 +66,16 @@ const Queue = () => {
         }
     }
 
+    const handlePrioritize = async (queueId: number) => {
+        try {
+            await axios.put(API_URL+"/queue/"+queueId);
+
+            fetchQueue();
+        } catch (e: any) {
+            console.error("Could not remove song", e);
+        }
+    }
+
     return (
         <div id="detail">
         <div className='search-container'>
@@ -89,8 +102,22 @@ const Queue = () => {
         <ul className='queue-list'>
             {queue.map((item: any) => 
             <li key={item.qid}>
-                <span>{item.songId.replace(/-/g, ' ')}</span> 
-                <button onClick={() => handleRemove(item.qid)}>Remove</button>
+            <span>{item.songId.replace(/-/g, ' ')}</span> 
+            <div className='icon-container'>
+                <button onClick={() => handleRemove(item.qid)}
+                data-tooltip-id='remove' 
+                data-tooltip-content='Remove song from queue'> 
+                    <CircleX/>
+                </button>
+                <Tooltip id="remove" />
+
+                <button onClick={() => handlePrioritize(item.qid)} 
+                data-tooltip-id='prioritize' 
+                data-tooltip-content='Move song up in queue'> 
+                    <CircleArrowUp/>
+                </button>
+                <Tooltip id="prioritize" />
+            </div>
             </li>)}
         </ul>
         </div>
