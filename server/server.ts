@@ -52,7 +52,8 @@ app.post("/api/queue", (req, res) => {
   }
 
   queue.push(qEntry);
-  return res.status(201).json(qEntry);
+  res.json(qEntry);
+  return res.status(201);
 })
 
 // POST with API key
@@ -85,7 +86,7 @@ app.put("/api/queue/:id", (req, res) => {
   queue[songIdx].priority--;
   queue[songIdx-1].priority++;
   [queue[songIdx], queue[songIdx-1]] = [queue[songIdx-1], queue[songIdx]];
-  return res.status(201);
+  return res.sendStatus(201);
 })
 
 // DELETE
@@ -94,7 +95,7 @@ app.put("/api/queue/:id", (req, res) => {
 app.delete("/api/queue/:id", (req, res) => {
   const {id} = req.params;
   queue = queue.filter(entry => entry.qid !== parseInt(id));
-  return res.status(204);
+  return res.sendStatus(204);
 })
 
 app.listen(port, () => {

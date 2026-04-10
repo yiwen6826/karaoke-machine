@@ -32,6 +32,8 @@ const Queue = () => {
         else {
             setSearchResults([]);
         }
+
+        fetchQueue();
     }
 
     const fetchQueue = async () => {
@@ -86,10 +88,9 @@ const Queue = () => {
         <h2>Up Next:</h2>
         <ul className='queue-list'>
             {queue.map((item: any) => 
-            <li key={item.queueId}>
-                <button onClick={() => handleRemove(item.queueId)}>
-                Remove
-                </button>
+            <li key={item.qid}>
+                <span>{item.songId.replace(/-/g, ' ')}</span> 
+                <button onClick={() => handleRemove(item.qid)}>Remove</button>
             </li>)}
         </ul>
         </div>
