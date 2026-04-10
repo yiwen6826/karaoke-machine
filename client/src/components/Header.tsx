@@ -12,14 +12,24 @@ import { MicVocal } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
-    header: {
+    headerContainer: {
         display: "flex",
         justifyContent: "start",
         gap: "2rem",
         alignItems: "center",
         height: "100%",
+        backgroundColor: "transparent",
+
+        maxWidth: "100%",
+        paddingLeft: rem(20),
+        paddingRight: rem(20),
     },
 
+    headerRoot: {
+        backgroundColor: "#0f0f0f",
+        backgroundImage: "radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%)",
+        borderBottom: "1px solid #3992ff", 
+    },
     links: {
         [theme.fn.smallerThan("xs")]: {
             display: "none",
@@ -38,33 +48,31 @@ const useStyles = createStyles((theme) => ({
         padding: `${rem(8)} ${rem(12)}`,
         borderRadius: theme.radius.sm,
         textDecoration: "none",
-        color:
-            theme.colorScheme === "dark"
-                ? theme.colors.dark[0]
-                : theme.colors.gray[7],
+        color: "#a4a4a4",
         fontSize: theme.fontSizes.sm,
         fontWeight: 500,
+        fontFamily: "Tilt Neon",
+        transition: "all 0.2s ease",
 
         "&:hover": {
-            backgroundColor:
-                theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
+            color: "#ff00ff",
+            textShadow: "0 0 5px #ff00ff",
+            backgroundColor: "rgba(255, 0, 255, 0.1)",
         },
     },
 
     linkActive: {
         "&, &:hover": {
-            backgroundColor: theme.fn.variant({
-                variant: "light",
-                color: theme.primaryColor,
-            }).background,
-            color: theme.fn.variant({
-                variant: "light",
-                color: theme.primaryColor,
-            }).color,
+            color: "#ff00ff",
+            backgroundColor: "rgba(255, 0, 255, 0.2)",
+            borderBottom: "2px solid #ff00ff",
         },
     },
+
+    logo: {
+        color: "#3992ff", 
+        filter: "drop-shadow(0 0 5px #3992ff)",
+    }
 }));
 
 interface HeaderSimpleProps {
@@ -92,9 +100,9 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
     ));
 
     return (
-        <Header height={60}>
-            <Container className={classes.header}>
-                <MicVocal size={28} />
+        <Header height={60} className={classes.headerRoot}>
+            <Container className={classes.headerContainer}>
+                <MicVocal size={28} className={classes.logo}/>
                 <Group spacing={5} className={classes.links}>
                     {items}
                 </Group>
@@ -103,6 +111,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
                     onClick={toggle}
                     className={classes.burger}
                     size='sm'
+                    color="#ff00ff"
                 />
             </Container>
         </Header>

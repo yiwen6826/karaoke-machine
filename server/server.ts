@@ -8,8 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 // GET
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/sing/:id", (req, res) => {
+  const song = req.params.id;
+  res.send("Hello World!"); // TODO: SEND REQUESTED SONG
 })
 
 // POST
