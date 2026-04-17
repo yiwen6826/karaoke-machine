@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Queue from "./Queue";
 
 const Sing = () => {
