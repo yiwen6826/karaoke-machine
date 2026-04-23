@@ -10,6 +10,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { MicVocal } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthUserProvider";
+import { signIn, signOut } from "../auth/auth";
 
 const useStyles = createStyles((theme) => ({
     headerContainer: {
@@ -83,6 +85,17 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
     const [opened, { toggle }] = useDisclosure(false);
     const [active, setActive] = useState(links[0].link);
     const { classes, cx } = useStyles();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const {user} = useAuth();
+    const handleLoginClick = async () => {
+        if (isLoggedIn) {
+            signOut();
+        }
+        else {
+            signIn();
+        }
+        setIsLoggedIn(!isLoggedIn);
+    };
 
     const items = links.map((link) => (
         <Link
@@ -105,6 +118,25 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
                 <MicVocal size={28} className={classes.logo}/>
                 <Group spacing={5} className={classes.links}>
                     {items}
+                </Group>
+                
+                <Group className={classes.links} style={{ marginLeft: 'auto' }}>
+                    {isLoggedIn && user && (
+                        <span style={{ color: '#a4a4a4', fontSize: '14px', fontFamily: 'Tilt Neon' }}>
+                            Hello, {user.displayName}
+                        </span>
+                    )}
+                    <button 
+                        onClick={handleLoginClick} 
+                        className={classes.link}
+                        style={{ 
+                            background: 'transparent', 
+                            border: 'none', 
+                            cursor: 'pointer' 
+                        }}
+                    > 
+                    {isLoggedIn ? 'Sign Out' : 'Log In'}
+                    </button>
                 </Group>
                 <Burger
                     opened={opened}
