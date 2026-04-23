@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import cors from "cors";
 import { SONG_LIBRARY } from "./constants/song-library";
+import { db } from './firebase';
 
 const app: Express = express();
 const port = 8080;
@@ -15,18 +16,22 @@ type queueEntry = {
   priority: number // starts at 0, corresponds to idx in queue
 };
 
-let queue: queueEntry[] = [];
+const getFirestoreQueue = async () => {
+  const snapshot = await db.collection("queue").get();
+  return snapshot.docs.map(doc => ({qid: 0, ... doc.data()}));
+}
 
 // GET
 // send sorted queue (min priority queue i.e. lowest priority first)
 // needed for updating gui
-app.get("/api/queue", (req, res) => {
-  //const sortedQueue = [...queue].sort((a, b) => a.priority - b.priority);
+app.get("/api/queue", async (req, res) => {
+  const snapshot = await db.collection("queue").orderBy("priority", "asc").get();
+  const queue: queueEntry[] = snapshot.docs.map(doc => doc.data() as queueEntry);
   res.json(queue);
 })
 
 // search queue
-app.get("/api/search", (req, res) => {
+app.get("/api/search", async (req, res) => {
   const query = (req.query.q as string)?.toLowerCase();
 
   if (!query) {res.json([]); return;} // no query
@@ -39,7 +44,7 @@ app.get("/api/search", (req, res) => {
 // add song to queue
 // If successful, returns status 201 and json of qEntry
 // Otherwise, returns status 404
-app.post("/api/queue", (req, res) => {
+app.post("/api/queue", async (req, res) => {
   const {songId} = req.body;
   const song = SONG_LIBRARY.find(s => s.id === songId);
   if (!song) return res.status(404).send("Song not found");
@@ -48,53 +53,59 @@ app.post("/api/queue", (req, res) => {
     qid: Date.now(),
     songId: song.id,
     url: song.video_url,
-    priority: queue.length, 
+    priority: Date.now(), 
   }
 
-  queue.push(qEntry);
-  res.json(qEntry);
-  return res.status(201);
+  await db.collection("queue").add(qEntry);
+  return res.status(201).json(qEntry);
 })
-
-// POST with API key
-// app.post("/api/", (req, res) => {
-//   try {
-//     const body = req.body;
-//     const key = body.key;
-//     if (!key) {
-//       throw new Error("Key not found");
-//     }
-
-//     console.log(key);
-
-//     res.json({message: `Hello! Your key was ${key}`});
-//   } catch (e: any) {
-//     res.status(404).json({error: e.message});
-//   }
-// })
 
 // PUT
 // decrement song priority in queue (i.e. move it upward)
 // If successful, returns status 201.
 // Otherwise, returns status 404 if song not found; returns status 405 if song is first in queue and cannot change priority.
-app.put("/api/queue/:id", (req, res) => {
-  const {id} = req.params;
-  const songIdx = queue.findIndex(entry => entry.qid === parseInt(id));
-  if (songIdx === -1) return res.status(404).send("Song not found in queue");
-  if (songIdx === 0) return res.status(405).send("Song is first in queue, cannot boost priority");
+app.put("/api/queue/:id", async (req, res) => {
+  const qidToBoost = parseInt(req.params.id);
+
+  const snapshot = await db.collection("queue").where("qid", "==", qidToBoost).get();
   
-  queue[songIdx].priority--;
-  queue[songIdx-1].priority++;
-  [queue[songIdx], queue[songIdx-1]] = [queue[songIdx-1], queue[songIdx]];
+  if (snapshot.empty) return res.status(404).send("Song not found in queue");
+  
+  const doc = snapshot.docs[0];
+  const currentData = doc.data() as queueEntry;
+
+  const prevEntrySnapshot = await db.collection("queue")
+    .where("priority", "<", currentData.priority)
+    .orderBy("priority", "desc")
+    .limit(1)
+    .get();
+
+  if (prevEntrySnapshot.empty) return res.status(405).send("Cannot boost priority further");
+
+  const prevDoc = prevEntrySnapshot.docs[0];
+  const prevData = prevDoc.data() as queueEntry;
+
+  const batch = db.batch();
+  batch.update(doc.ref, { priority: prevData.priority });
+  batch.update(prevDoc.ref, { priority: currentData.priority });
+  await batch.commit();
+
   return res.sendStatus(201);
 })
 
 // DELETE
 // remove song from queue
 // Returns status 204
-app.delete("/api/queue/:id", (req, res) => {
-  const {id} = req.params;
-  queue = queue.filter(entry => entry.qid !== parseInt(id));
+app.delete("/api/queue/:id", async (req, res) => {
+  const qidToDelete = parseInt(req.params.id);
+  const snapshot = await db.collection("queue")
+    .where("qid", "==", qidToDelete)
+    .get();
+
+  if (snapshot.empty) {
+    return res.status(404).send("Entry not found");
+  }
+  await snapshot.docs[0].ref.delete();
   return res.sendStatus(204);
 })
 

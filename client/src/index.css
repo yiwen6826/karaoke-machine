@@ -49,6 +49,7 @@ button:active {
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow: hidden;
 
     background-color: #0f0f0f;
     background-image: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
@@ -95,11 +96,20 @@ button:active {
     width: 100%;
     max-width: 500px;
     margin-top: 2rem;
+
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
 }
 
 .icon-container {
     width: 100%;
     max-width: 100px;
+}
+
+.video-container {
+    max-height: 400px;
+    flex-shrink: 0;
 }
 
 ul {

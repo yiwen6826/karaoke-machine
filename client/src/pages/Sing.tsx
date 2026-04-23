@@ -10,4 +10,4 @@ const Sing = () => {
     );
 };
 
-export default Sing;c 
+export default Sing;

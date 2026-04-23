@@ -3,19 +3,26 @@ import { CircleArrowUp } from 'lucide-react';
 import { CircleX } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
+import VideoPlayer from './VideoPlayer';
 
 const API_URL = "http://localhost:8080/api";
+interface qEntry {
+    qid: number,
+    songId: string,
+    url: string,
+    priority: number,
+}
+
 interface Video {
     id: string,
     video_url: string,
     priority: number,
 }
 
-
 const Queue = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<Video[]>([]);
-    const [queue, setQueue] = useState<string[]>([]);
+    const [queue, setQueue] = useState<qEntry[]>([]);
 
     useEffect(() => {
         fetchQueue();
@@ -78,6 +85,17 @@ const Queue = () => {
 
     return (
         <div id="detail">
+            {
+                queue.length > 0 && (
+                    <div className='video-container'>
+                        <VideoPlayer
+                        songId={queue[0].songId}
+                        videoPath={queue[0].url}
+                        />
+                    <h2>Now Playing: {queue[0].songId.replace(/-/g, ' ')}</h2>
+                    </div>
+                )
+            }
         <div className='search-container'>
         <input
             type="text"
@@ -99,6 +117,7 @@ const Queue = () => {
 
         <div className='queue-container'>
         <h2>Up Next:</h2>
+        <h2>{queue.length == 0 ? 'Nothing here yet!' : ''}</h2>
         <ul className='queue-list'>
             {queue.map((item: any) => 
             <li key={item.qid}>
