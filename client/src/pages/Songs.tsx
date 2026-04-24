@@ -1,6 +1,9 @@
+import ThumbnailGrid from "../components/ThumbnailGrid";
+
 const Songs = () => 
 <div id="detail">
-    <h1>display songs thumbnails as buttons</h1>
+    <ThumbnailGrid folderPath="thumbnails">
+    </ThumbnailGrid>
 </div>;
 
 export default Songs;

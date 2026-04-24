@@ -46,10 +46,10 @@ button:active {
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
-    overflow: hidden;
+    overflow-y: scroll;
 
     background-color: #0f0f0f;
     background-image: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
@@ -110,6 +110,28 @@ button:active {
 .video-container {
     max-height: 400px;
     flex-shrink: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+    gap: 50px;
+    padding: 50px;
+    width: 100%;
+}
+
+.thumbnail-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+
+}
+
+.thumbnail-btn img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 ul {
