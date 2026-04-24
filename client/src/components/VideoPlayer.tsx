@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase.ts";
 
-const VideoPlayer = ({ songId, videoPath }: { songId: string, videoPath: string }) => {
+const VideoPlayer = ({ videoPath }: { videoPath: string }) => {
   const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
-    console.log("Attempting to load path:", videoPath);
     const fetchUrl = async () => {
       try {
         const fileRef = ref(storage, videoPath);

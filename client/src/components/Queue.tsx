@@ -131,7 +131,6 @@ const Queue = () => {
                 queue.length > 0 && (
                     <div className='video-container'>
                         <VideoPlayer
-                        songId={queue[0].songId}
                         videoPath={queue[0].url}
                         />
                     <h2>Now Playing: {queue[0].songId.replace(/-/g, ' ')}</h2>
