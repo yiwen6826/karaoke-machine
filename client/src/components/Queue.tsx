@@ -4,6 +4,7 @@ import { CircleX } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
 import VideoPlayer from './VideoPlayer';
+import { useAuth } from "../auth/AuthUserProvider";
 
 const API_URL = "http://localhost:8080/api";
 interface qEntry {
@@ -23,10 +24,15 @@ const Queue = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<Video[]>([]);
     const [queue, setQueue] = useState<qEntry[]>([]);
+    const { user } = useAuth();
 
     useEffect(() => {
+        if (!user) {
+            setQueue([]);
+            setSearchResults([]);
+        }
         fetchQueue();
-    }, []);
+    }, [user]);
 
     const handleSearch = async(term: string) => {
         setSearchTerm(term);
@@ -47,25 +53,46 @@ const Queue = () => {
     }
 
     const fetchQueue = async () => {
-        const response = await axios.get(API_URL + "/queue");
+        if (!user?.uid) return;
+        const response = await axios.get(API_URL + "/queue/" + user?.uid);
         setQueue(response.data);
     }
 
     const enqueue = async (song: Video) => {
-        try {
-            await axios.post(API_URL+"/queue", {songId: song.id});
-
+        const newEntry: qEntry = {
+            qid: Date.now(),
+            songId: song.id,
+            url: song.video_url,
+            priority: queue.length
+        }
+        if (!user?.uid) {
+            setQueue([...queue, newEntry]);
             setSearchTerm('');
             setSearchResults([]);
             fetchQueue();
-        } catch (e: any) {
-            alert("Error adding song to queue");
+        }
+        else {
+            try {
+                await axios.post(API_URL+"/queue/", {songId: song.id, uid: user?.uid});
+
+                setSearchTerm('');
+                setSearchResults([]);
+                fetchQueue();
+            } catch (e: any) {
+                alert("Error adding song to queue");
+            }
         }
     };
 
     const handleRemove = async (queueId: number) => {
+        if (!user?.uid) {
+            setQueue(queue.filter((song) => song.qid != queueId));
+            setSearchTerm('');
+            setSearchResults([]);
+            fetchQueue();
+        }
         try {
-            await axios.delete(API_URL+"/queue/"+queueId);
+            await axios.delete(API_URL+"/queue/"+queueId+"/"+user?.uid);
 
             fetchQueue();
         } catch (e: any) {
@@ -74,12 +101,27 @@ const Queue = () => {
     }
 
     const handlePrioritize = async (queueId: number) => {
-        try {
-            await axios.put(API_URL+"/queue/"+queueId);
-
+        if (!user?.uid) {
+            const songIdx: number = queue.findIndex((song) => song.qid === queueId);
+            if (songIdx <= 0) {
+                console.error("Could not prioritize song");
+                return;
+            }
+            const newQueue = [...queue];
+            [newQueue[songIdx], newQueue[songIdx-1]] = [newQueue[songIdx-1], newQueue[songIdx]];
+            setQueue(newQueue);
+            setSearchTerm('');
+            setSearchResults([]);
             fetchQueue();
-        } catch (e: any) {
-            console.error("Could not remove song", e);
+        }
+        else {
+            try {
+                await axios.put(API_URL+"/queue/"+queueId+"/"+user?.uid);
+
+                fetchQueue();
+            } catch (e: any) {
+                console.error("Could not prioritize song", e);
+            }
         }
     }
 

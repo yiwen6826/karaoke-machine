@@ -7,27 +7,36 @@ import {
   useEffect,
 } from "react";
 import { auth } from "../firebase";
+import { signIn, signOut } from "./auth";
 
 type AuthData = {
   user?: User | null;
+  isLoggedIn: boolean;
+  handleLoginClick: () => void; 
 };
 
-const AuthUserContext = createContext<AuthData>({user: null});
+const AuthUserContext = createContext<AuthData>({user: null, isLoggedIn: false, handleLoginClick: () => {}});
 
 export default function AuthUserProvider({
   children,
 }: {
   readonly children: ReactNode;
 }) {
-  const [user, setUser] = useState<AuthData>({user: null});
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) setUser({user : userAuth});
-      else setUser({user : null});
+      if (userAuth) setUser(userAuth);
+      else setUser(null);
     });
   }, []);
 
-  return (<AuthUserContext.Provider value={user}>{children}</AuthUserContext.Provider>);
+  const handleLoginClick = async () => {
+        if (user) await signOut();
+        else signIn();
+    };
+
+
+  return (<AuthUserContext.Provider value={{user, isLoggedIn: !!user, handleLoginClick}}>{children}</AuthUserContext.Provider>);
 }
 
 export const useAuth = () => {

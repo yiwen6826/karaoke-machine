@@ -22,10 +22,11 @@ const getFirestoreQueue = async () => {
 }
 
 // GET
-// send sorted queue (min priority queue i.e. lowest priority first)
+// send sorted queue of each user (min priority queue i.e. lowest priority first)
 // needed for updating gui
-app.get("/api/queue", async (req, res) => {
-  const snapshot = await db.collection("queue").orderBy("priority", "asc").get();
+app.get("/api/queue/:uid", async (req, res) => {
+  const {uid} = req.params;
+  const snapshot = await db.collection("queue").where("userId", "==", uid).orderBy("priority", "asc").get();
   const queue: queueEntry[] = snapshot.docs.map(doc => doc.data() as queueEntry);
   res.json(queue);
 })
@@ -45,15 +46,19 @@ app.get("/api/search", async (req, res) => {
 // If successful, returns status 201 and json of qEntry
 // Otherwise, returns status 404
 app.post("/api/queue", async (req, res) => {
-  const {songId} = req.body;
+  const {songId, uid} = req.body;
   const song = SONG_LIBRARY.find(s => s.id === songId);
+  if (!uid) return res.status(400).send("No user provided");
   if (!song) return res.status(404).send("Song not found");
+
+  const snapshot = await db.collection("queue").where("userId", "==", uid).get();
 
   const qEntry = {
     qid: Date.now(),
     songId: song.id,
     url: song.video_url,
-    priority: Date.now(), 
+    priority: snapshot.size, 
+    userId: uid,
   }
 
   await db.collection("queue").add(qEntry);
@@ -64,10 +69,15 @@ app.post("/api/queue", async (req, res) => {
 // decrement song priority in queue (i.e. move it upward)
 // If successful, returns status 201.
 // Otherwise, returns status 404 if song not found; returns status 405 if song is first in queue and cannot change priority.
-app.put("/api/queue/:id", async (req, res) => {
+app.put("/api/queue/:id/:uid", async (req, res) => {
   const qidToBoost = parseInt(req.params.id);
+  const {uid} = req.params;
 
-  const snapshot = await db.collection("queue").where("qid", "==", qidToBoost).get();
+  if (!uid || uid === "undefined") {
+    return res.status(400).send("Invalid User ID");
+  }
+
+  const snapshot = await db.collection("queue").where("qid", "==", qidToBoost).where("userId", "==", uid).get();
   
   if (snapshot.empty) return res.status(404).send("Song not found in queue");
   
@@ -75,8 +85,9 @@ app.put("/api/queue/:id", async (req, res) => {
   const currentData = doc.data() as queueEntry;
 
   const prevEntrySnapshot = await db.collection("queue")
+    .where("userId", "==", uid)
     .where("priority", "<", currentData.priority)
-    .orderBy("priority", "desc")
+    .orderBy("priority", "asc")
     .limit(1)
     .get();
 
@@ -96,10 +107,16 @@ app.put("/api/queue/:id", async (req, res) => {
 // DELETE
 // remove song from queue
 // Returns status 204
-app.delete("/api/queue/:id", async (req, res) => {
-  const qidToDelete = parseInt(req.params.id);
+app.delete("/api/queue/:id/:uid", async (req, res) => {
+  const {id, uid} = req.params;
+
+  if (!uid || uid === "undefined") {
+    return res.status(400).send("Invalid User ID");
+  }
+  const qidToDelete = parseInt(id);
   const snapshot = await db.collection("queue")
     .where("qid", "==", qidToDelete)
+    .where("userId", "==", uid)
     .get();
 
   if (snapshot.empty) {
