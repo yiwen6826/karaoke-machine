@@ -1,4 +1,4 @@
-import Queue from "./Queue";
+import Queue from "../components/Queue";
 
 const Sing = () => {
     return (
