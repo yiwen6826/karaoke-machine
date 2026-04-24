@@ -17,8 +17,8 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
-    id: "auli'i-crahalho-how-far-i'll-go-moana",
-    video_url: "auli'i-crahalho-how-far-i'll-go-moana.mp4",
+    id: "auli'i-cravalho-how-far-i'll-go-moana",
+    video_url: "auli'i-cravalho-how-far-i'll-go-moana.mp4",
     priority: 0,
   },
   {
@@ -63,7 +63,7 @@ export const SONG_LIBRARY : Video[] = [
   },
   {
     id: "daniel-caesar-ft-h.e.r-best-part",
-    video_url: "daniel-caesar-ft-h.e.r.-best-part.mp4",
+    video_url: "daniel-caesar-ft-h.e.r-best-part.mp4",
     priority: 0,
   },
   {
@@ -87,8 +87,8 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
-    id: "elvis-presley-i-can't-help-falling-in-love-with-you",
-    video_url: "elvis-presley-i-can't-help-falling-in-love-with-you.mp4",
+    id: "elvis-presley-can't-help-falling-in-love",
+    video_url: "elvis-presley-can't-help-falling-in-love.mp4",
     priority: 0,
   },
   {
