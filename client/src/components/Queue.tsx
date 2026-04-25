@@ -69,7 +69,7 @@ const Queue = () => {
             setQueue([...queue, newEntry]);
             setSearchTerm('');
             setSearchResults([]);
-            fetchQueue();
+            
         }
         else {
             try {
