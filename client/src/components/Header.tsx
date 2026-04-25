@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
     createStyles,
     Header,
@@ -11,6 +10,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { MicVocal } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthUserProvider";
+import { useLocation } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     headerContainer: {
@@ -82,7 +82,7 @@ interface HeaderSimpleProps {
 
 export function HeaderSimple({ links }: HeaderSimpleProps) {
     const [opened, { toggle }] = useDisclosure(false);
-    const [active, setActive] = useState(links[0].link);
+    const location = useLocation();
     const { classes, cx } = useStyles();
     const {user, isLoggedIn, handleLoginClick} = useAuth();
     const items = links.map((link) => (
@@ -90,11 +90,8 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
             key={link.label}
             to={link.link}
             className={cx(classes.link, {
-                [classes.linkActive]: active === link.link,
+                [classes.linkActive]: location.pathname === link.link,
             })}
-            onClick={(event) => {
-                setActive(link.link);
-            }}
         >
             {link.label}
         </Link>
