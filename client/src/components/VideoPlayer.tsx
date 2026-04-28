@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase.ts";
 
-const VideoPlayer = ({ videoPath }: { videoPath: string }) => {
+const VideoPlayer = ({ videoPath,  handleVidEnded }: { videoPath: string, handleVidEnded: () => void }) => {
   const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const VideoPlayer = ({ videoPath }: { videoPath: string }) => {
   }, [videoPath]);
 
   return (
-    <video key={url} controls autoPlay width="100%">
+    <video key={url} controls autoPlay width="100%" onEnded={handleVidEnded}>
       <source src={url} type="video/mp4" />
     </video>
   );

@@ -100,6 +100,16 @@ const Queue = () => {
         }
     }
 
+    const handleVidEnded = async () => {
+        try {
+            await axios.delete(API_URL+"/queue/"+queue[0].qid+"/"+user?.uid);
+
+            fetchQueue();
+        } catch (e: any) {
+            console.error("Could not remove current song", e);
+        }
+    }
+
     const handlePrioritize = async (queueId: number) => {
         if (!user?.uid) {
             const songIdx: number = queue.findIndex((song) => song.qid === queueId);
@@ -132,6 +142,7 @@ const Queue = () => {
                     <div className='video-container'>
                         <VideoPlayer
                         videoPath={queue[0].url}
+                        handleVidEnded={handleVidEnded}
                         />
                     <h2>Now Playing: {queue[0].songId.replace(/-/g, ' ')}</h2>
                     </div>
