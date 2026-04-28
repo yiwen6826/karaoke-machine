@@ -7,8 +7,38 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "adele-rolling-in-the-deep",
+    video_url: "adele-rolling-in-the-deep.mp4",
+    priority: 0,
+  },
+  {
+    id: "adele-someone-like-you",
+    video_url: "adele-someone-like-you.mp4",
+    priority: 0,
+  },
+  {
+    id: "alexandra-burke-hallelujah",
+    video_url: "alexandra-burke-hallelujah.mp4",
+    priority: 0,
+  },
+  {
+    id: "alicia-keys-girl-on-fire",
+    video_url: "alicia-keys-girl-on-fire.mp4",
+    priority: 0,
+  },
+  {
     id: "alicia-keys-if-i-ain't-got-you",
     video_url: "alicia-keys-if-i-ain't-got-you.mp4",
+    priority: 0,
+  },
+  {
+    id: "anna-kendrick-cups-pitch-perfect",
+    video_url: "anna-kendrick-cups-pitch-perfect.mp4",
+    priority: 0,
+  },
+  {
+    id: "anne-marie-2002",
+    video_url: "anne-marie-2002.mp4",
     priority: 0,
   },
   {
@@ -32,8 +62,18 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "billie-eilish-with-khalid-lovely",
+    video_url: "billie-eilish-with-khalid-lovely.mp4",
+    priority: 0,
+  },
+  {
     id: "calum-scott-you-are-the-reason",
     video_url: "calum-scott-you-are-the-reason.mp4",
+    priority: 0,
+  },
+  {
+    id: "camila-cabello-ft-young-thug-havana",
+    video_url: "camila-cabello-ft-young-thug-havana.mp4",
     priority: 0,
   },
   {
@@ -97,8 +137,18 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "frankie-valli-can't-take-my-eyes-off-you",
+    video_url: "frankie-valli-can't-take-my-eyes-off-you.mp4",
+    priority: 0,
+  },
+  {
     id: "gloria-gaynor-i-will-survive",
     video_url: "gloria-gaynor-i-will-survive.mp4",
+    priority: 0,
+  },
+  {
+    id: "hozier-take-me-to-church",
+    video_url: "hozier-take-me-to-church.mp4",
     priority: 0,
   },
   {
@@ -119,6 +169,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "jason-mraz-i'm-yours",
     video_url: "jason-mraz-i'm-yours.mp4",
+    priority: 0,
+  },
+  {
+    id: "jessie-j-ariana-grande-nicki-minaj-bang-bang",
+    video_url: "jessie-j-ariana-grande-nicki-minaj-bang-bang.mp4",
     priority: 0,
   },
   {
@@ -162,6 +217,16 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "lady-gaga-always-remember-us-this-way",
+    video_url: "lady-gaga-always-remember-us-this-way.mp4",
+    priority: 0,
+  },
+  {
+    id: "lady-gaga-bradley-cooper-shallow",
+    video_url: "lady-gaga-bradley-cooper-shallow.mp4",
+    priority: 0,
+  },
+  {
     id: "laufey-from-the-start",
     video_url: "laufey-from-the-start.mp4",
     priority: 0,
@@ -172,8 +237,18 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "lil-nas-x-ft-billy-ray-cyrus-old-town-road",
+    video_url: "lil-nas-x-ft-billy-ray-cyrus-old-town-road.mp4",
+    priority: 0,
+  },
+  {
     id: "luis-fonsi-daddy-yankee-ft-justin-bieber-despacito",
     video_url: "luis-fonsi-daddy-yankee-ft-justin-bieber-despacito.mp4",
+    priority: 0,
+  },
+  {
+    id: "lukas-graham-7-years",
+    video_url: "lukas-graham-7-years.mp4",
     priority: 0,
   },
   {
