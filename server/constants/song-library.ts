@@ -317,16 +317,6 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
-    id: "taylor-swift-blank-space",
-    video_url: "taylor-swift-blank-space.mp4",
-    priority: 0,
-  },
-  {
-    id: "taylor-swift-you-belong-with-me",
-    video_url: "taylor-swift-you-belong-with-me.mp4",
-    priority: 0,
-  },
-  {
     id: "the-greatest-showman-a-million-dreams",
     video_url: "the-greatest-showman-a-million-dreams.mp4",
     priority: 0,
