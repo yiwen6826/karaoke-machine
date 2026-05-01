@@ -58,18 +58,22 @@ const Queue = () => {
         setQueue(response.data);
     }
 
+    const queueLength = async () => {
+        fetchQueue();
+        return queue.length;
+    }
+
     const enqueue = async (song: Video) => {
         const newEntry: qEntry = {
             qid: Date.now(),
             songId: song.id,
             url: song.video_url,
-            priority: queue.length
+            priority: await queueLength(),
         }
         if (!user?.uid) {
             setQueue([...queue, newEntry]);
             setSearchTerm('');
             setSearchResults([]);
-            
         }
         else {
             try {
@@ -86,17 +90,28 @@ const Queue = () => {
 
     const handleRemove = async (queueId: number) => {
         if (!user?.uid) {
-            setQueue(queue.filter((song) => song.qid != queueId));
+            const songToRemove = queue.find(song => song.qid == queueId);
+            if (!songToRemove) {
+                alert("Error removing song from queue");
+                return;
+            }
+            const removedPriority = songToRemove.priority;
+            const smallerPriorityQueue = queue.filter(item => item.priority < removedPriority);
+            const greaterPriorityQueue = queue.filter(item => item.priority >= removedPriority);
+            greaterPriorityQueue.forEach(entry => {entry.priority--;})
+
+            setQueue(smallerPriorityQueue.concat(greaterPriorityQueue).filter((song) => song.qid != queueId));
             setSearchTerm('');
             setSearchResults([]);
             fetchQueue();
-        }
-        try {
-            await axios.delete(API_URL+"/queue/"+queueId+"/"+user?.uid);
+        } else {
+            try {
+                await axios.delete(API_URL+"/queue/"+queueId+"/"+user?.uid);
 
-            fetchQueue();
-        } catch (e: any) {
-            console.error("Could not remove song", e);
+                fetchQueue();
+            } catch (e: any) {
+                console.error("Could not remove song", e);
+            }
         }
     }
 
@@ -106,13 +121,14 @@ const Queue = () => {
             setSearchTerm('');
             setSearchResults([]);
             fetchQueue();
-        }
-        try {
-            await axios.delete(API_URL+"/queue/"+queue[0].qid+"/"+user?.uid);
+        } else {
+            try {
+                await axios.delete(API_URL+"/queue/"+queue[0].qid+"/"+user?.uid);
 
-            fetchQueue();
-        } catch (e: any) {
-            console.error("Could not remove current song", e);
+                fetchQueue();
+            } catch (e: any) {
+                console.error("Could not remove current song", e);
+            }
         }
     }
 
@@ -124,6 +140,9 @@ const Queue = () => {
                 return;
             }
             const newQueue = [...queue];
+            const tmp = newQueue[songIdx].priority;
+            newQueue[songIdx].priority = newQueue[songIdx-1].priority;
+            newQueue[songIdx-1].priority = tmp;
             [newQueue[songIdx], newQueue[songIdx-1]] = [newQueue[songIdx-1], newQueue[songIdx]];
             setQueue(newQueue);
             setSearchTerm('');
