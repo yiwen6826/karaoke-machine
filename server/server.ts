@@ -5,6 +5,7 @@ import { db } from './firebase';
 
 const app: Express = express();
 const port = 8080;
+const { FieldValue } = require('firebase-admin/firestore');
 
 app.use(cors());
 app.use(express.json());
@@ -80,7 +81,7 @@ app.put("/api/queue/:id/:uid", async (req, res) => {
   const snapshot = await db.collection("queue").where("qid", "==", qidToBoost).where("userId", "==", uid).get();
   
   if (snapshot.empty) return res.status(404).send("Song not found in queue");
-  
+  console.log(snapshot.docs);
   const doc = snapshot.docs[0];
   const currentData = doc.data() as queueEntry;
 
@@ -90,7 +91,7 @@ app.put("/api/queue/:id/:uid", async (req, res) => {
     .orderBy("priority", "asc")
     .limit(1)
     .get();
-
+  console.log(prevEntrySnapshot.docs);
   if (prevEntrySnapshot.empty) return res.status(405).send("Cannot boost priority further");
 
   const prevDoc = prevEntrySnapshot.docs[0];
@@ -122,7 +123,18 @@ app.delete("/api/queue/:id/:uid", async (req, res) => {
   if (snapshot.empty) {
     return res.status(404).send("Entry not found");
   }
+
+  const greaterPrioritySnapshot = await db.collection("queue")
+    .where("userId", "==", uid)
+    .where("priority", ">", snapshot.docs[0].data().priority)
+    .orderBy("priority", "asc")
+    .get();
   await snapshot.docs[0].ref.delete();
+
+  greaterPrioritySnapshot.forEach((doc) => {
+    console.log(doc.data);
+    doc.ref.update({priority: FieldValue.increment(-1)})
+  })
   return res.sendStatus(204);
 })
 
