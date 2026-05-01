@@ -38,24 +38,41 @@ button:active {
     transform: translateY(1px);
 }
 
-#detail {
+#homepage {
     padding: 0;
     width: 100vw;
     height: 100vh;
     margin: 0;
-
+    
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     text-align: center;
-    overflow-y: scroll;
+    overflow: hidden;
+    
+    background-color: #0f0f0f;
+    background-image: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
+}
+
+#detail {
+    padding: 0;
+    width: 100vw;
+    height: 100%;
+    margin: 0;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    overflow: auto;
 
     background-color: #0f0f0f;
     background-image: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
 }
 
-#detail h1 {
+#detail h1, #homepage h1 {
     font-family: 'Tilt Neon', system-ui;
     font-size: 4rem;
 
@@ -69,7 +86,7 @@ button:active {
     text-transform: uppercase;
 }
 
-#detail h2 {
+#detail h2, #homepage h2 {
     font-family: 'Tilt Neon', system-ui;
     font-size: 1rem;
 
@@ -90,6 +107,26 @@ button:active {
     transition-delay: 200ms;
 }
 
+.video-half {
+    flex: 1.5;
+    display: 200vh;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    height: 100%;
+    overflow: auto;
+}
+
+.queue-half {
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 1px solid rgba(57, 146, 255, 0.2);
+    padding: 1rem;
+    overflow-y: auto;
+}
 
 .search-container,
 .queue-container {
@@ -108,16 +145,19 @@ button:active {
 }
 
 .video-container {
-    max-height: 400px;
+    max-height: 450px;
     flex-shrink: 0;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-    gap: 50px;
-    padding: 50px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
     width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .thumbnail-btn {
@@ -129,9 +169,13 @@ button:active {
 
 .thumbnail-btn img {
     width: 100%;
-    height: 150px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px;
+    aspect-ratio: 16 / 9;
+
+    display: block;
+    transition: transform 0.2s ease;
 }
 
 ul {

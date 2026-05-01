@@ -93,7 +93,7 @@ export const SONG_LIBRARY : Video[] = [
   },
   {
     id: "christina-perri-a-thousand-years",
-    video_url: "christina-perri-a-thousand-years,mp4",
+    video_url: "christina-perri-a-thousand-years.mp4",
     priority: 0,
   },
   {

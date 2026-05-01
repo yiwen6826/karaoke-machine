@@ -101,6 +101,12 @@ const Queue = () => {
     }
 
     const handleVidEnded = async () => {
+        if (!user?.uid) {
+            setQueue(queue.filter((song) => song.qid != queue[0].qid));
+            setSearchTerm('');
+            setSearchResults([]);
+            fetchQueue();
+        }
         try {
             await axios.delete(API_URL+"/queue/"+queue[0].qid+"/"+user?.uid);
 
@@ -137,8 +143,9 @@ const Queue = () => {
 
     return (
         <div id="detail">
+            <div className='video-half'>
             {
-                queue.length > 0 && (
+                queue.length > 0 ? (
                     <div className='video-container'>
                         <VideoPlayer
                         videoPath={queue[0].url}
@@ -146,8 +153,10 @@ const Queue = () => {
                         />
                     <h2>Now Playing: {queue[0].songId.replace(/-/g, ' ')}</h2>
                     </div>
-                )
+                ) : (<h2>{queue.length == 0 ? 'Add a song to start singing!' : ''}</h2>)
             }
+            </div>
+        <div className='queue-half'>
         <div className='search-container'>
         <input
             type="text"
@@ -191,6 +200,7 @@ const Queue = () => {
             </div>
             </li>)}
         </ul>
+        </div>
         </div>
         </div>
     );
