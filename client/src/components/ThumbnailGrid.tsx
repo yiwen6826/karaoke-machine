@@ -48,9 +48,15 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
   return (
     <div className='grid-container'>
       {urls.map((url, index) => (
+        user ? (
         <button key={index} className="thumbnail-btn" onClick={() => handleThumbnailClick(url)}>
           <img src={url} alt={`Thumbnail ${index}`} />
         </button>
+        ) : (
+          <div className="thumbnail">
+            <img src={url} alt={`Thumbnail ${index}`} />
+          </div>
+        )
       ))}
     </div>
   );
