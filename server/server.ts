@@ -130,9 +130,11 @@ app.delete("/api/queue/:id/:uid", async (req, res) => {
     .get();
   await snapshot.docs[0].ref.delete();
 
+  const batch = db.batch();
   greaterPrioritySnapshot.forEach((doc) => {
-    doc.ref.update({priority: FieldValue.increment(-1)})
+    batch.update(doc.ref, {priority: FieldValue.increment(-1)})
   })
+  await batch.commit();
   return res.sendStatus(204);
 })
 

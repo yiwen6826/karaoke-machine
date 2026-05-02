@@ -19,12 +19,13 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
 
       const imageId = vidPath.split('/').pop() || "";
       const songId = imageId.replace(/\.(jpg|jpeg)$/i, "");
-      navigate('/sing');
 
-      if (user?.uid) await axios.post(API_URL+"/queue/", {songId: songId, uid: user?.uid});
+      if (user?.uid) {
+        await axios.post(API_URL+"/queue/", {songId: songId, uid: user?.uid})
+        .then(res => {if (res.status == 201) navigate('/sing');});
+      }
       else alert("Guest users must queue manually");
 
-      navigate('/sing');
     } catch (e: any) {
       console.error("Error adding song to queue", e);
     }
