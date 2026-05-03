@@ -17,6 +17,11 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "alan-walker-faded",
+    video_url: "alan-walker-faded.mp4",
+    priority: 0,
+  },
+  {
     id: "alexandra-burke-hallelujah",
     video_url: "alexandra-burke-hallelujah.mp4",
     priority: 0,
@@ -47,6 +52,11 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "ariana-grande-santa-tell-me",
+    video_url: "ariana-grande-santa-tell-me.mp4",
+    priority: 0,
+  },
+  {
     id: "auli'i-cravalho-how-far-i'll-go-moana",
     video_url: "auli'i-cravalho-how-far-i'll-go-moana.mp4",
     priority: 0,
@@ -54,6 +64,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "backstreet-boys-i-want-it-that-way",
     video_url: "backstreet-boys-i-want-it-that-way.mp4",
+    priority: 0,
+  },
+  {
+    id: "beauty-and-the-beast-tale-as-old-as-time",
+    video_url: "beauty-and-the-beast-tale-as-old-as-time.mp4",
     priority: 0,
   },
   {
@@ -79,6 +94,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "carly-rae-jepsen-call-me-maybe",
     video_url: "carly-rae-jepsen-call-me-maybe.mp4",
+    priority: 0,
+  },
+  {
+    id: "carrie-underwood-before-he-cheats",
+    video_url: "carrie-underwood-before-he-cheats.mp4",
     priority: 0,
   },
   {
@@ -124,6 +144,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "ellie-goulding-love-me-like-you-do",
     video_url: "ellie-goulding-love-me-like-you-do.mp4",
+    priority: 0,
+  },
+  {
+    id: "elliot-james-reay-i-think-they-call-this-love",
+    video_url: "elliot-james-reay-i-think-they-call-this-love.mp4",
     priority: 0,
   },
   {
@@ -207,8 +232,18 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "justin-bieber-nicki-minaj-beauty-and-a-beat",
+    video_url: "justin-bieber-nicki-minaj-beauty-and-a-beat.mp4",
+    priority: 0,
+  },
+  {
     id: "justin-bieber-sorry",
     video_url: "justin-bieber-sorry.mp4",
+    priority: 0,
+  },
+  {
+    id: "justin-bieber-what-do-you-mean",
+    video_url: "justin-bieber-what-do-you-mean.mp4",
     priority: 0,
   },
   {
@@ -252,8 +287,18 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "maroon-5-ft-cardi-b-girls-like-you",
+    video_url: "maroon-5-ft-cardi-b-girls-like-you.mp4",
+    priority: 0,
+  },
+  {
     id: "maroon-5-memories",
     video_url: "maroon-5-memories.mp4",
+    priority: 0,
+  },
+  {
+    id: "miley-cyrus-the-climb",
+    video_url: "miley-cyrus-the-climb.mp4",
     priority: 0,
   },
   {
@@ -267,6 +312,11 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "olivia-rodrigo-drivers-license",
+    video_url: "olivia-rodrigo-drivers-license.mp4",
+    priority: 0,
+  },
+  {
     id: "one-direction-night-changes",
     video_url: "one-direction-night-changes.mp4",
     priority: 0,
@@ -274,6 +324,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "queen-bohemian-rhapsody",
     video_url: "queen-bohemian-rhapsody.mp4",
+    priority: 0,
+  },
+  {
+    id: "rick-astley-never-gonna-give-you-up",
+    video_url: "rick-astley-never-gonna-give-you-up.mp4",
     priority: 0,
   },
   {
@@ -307,6 +362,16 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "spice-girls-wannabe",
+    video_url: "spice-girls-wannabe.mp4",
+    priority: 0,
+  },
+  {
+    id: "stephanie-poetri-i-love-you-3000",
+    video_url: "stephanie-poetri-i-love-you-3000.mp4",
+    priority: 0,
+  },
+  {
     id: "stephen-sanchez-until-i-found-you",
     video_url: "stephen-sanchez-until-i-found-you.mp4",
     priority: 0,
@@ -327,6 +392,16 @@ export const SONG_LIBRARY : Video[] = [
     priority: 0,
   },
   {
+    id: "the-kid-laroi-justin-bieber-stay",
+    video_url: "the-kid-laroi-justin-bieber-stay.mp4",
+    priority: 0,
+  },
+  {
+    id: "the-little-mermaid-part-of-your-world",
+    video_url: "the-little-mermaid-part-of-your-world.mp4",
+    priority: 0,
+  },
+  {
     id: "tones-and-i-dance-monkey",
     video_url: "tones-and-i-dance-monkey.mp4",
     priority: 0,
@@ -339,6 +414,11 @@ export const SONG_LIBRARY : Video[] = [
   {
     id: "whitney-houston-i-have-nothing",
     video_url: "whitney-houston-i-have-nothing.mp4",
+    priority: 0,
+  },
+  {
+    id: "whitney-houston-with-mariah-carey-when-you-believe",
+    video_url: "whitney-houston-with-mariah-carey-when-you-believe.mp4",
     priority: 0,
   },
 ]
