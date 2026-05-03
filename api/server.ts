@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Request as ExRequest, Response as ExResponse} from "express";
 import cors from "cors";
 import { SONG_LIBRARY } from "./constants/song-library";
 import { db } from './firebase';
@@ -29,7 +29,7 @@ app.use(cors({
 // GET
 // send sorted queue of each user (min priority queue i.e. lowest priority first)
 // needed for updating gui
-app.get("/api/queue/:uid", async (req: Request, res: Response) => {
+app.get("/api/queue/:uid", async (req: ExRequest, res: ExResponse) => {
   const {uid} = req.params;
   const snapshot = await db.collection("queue").where("userId", "==", uid).orderBy("priority", "asc").get();
   const queue: queueEntry[] = snapshot.docs.map((doc: any) => doc.data() as queueEntry);
@@ -37,7 +37,7 @@ app.get("/api/queue/:uid", async (req: Request, res: Response) => {
 })
 
 // search queue
-app.get("/api/search", async (req: Request, res: Response) => {
+app.get("/api/search", async (req: ExRequest, res: ExResponse) => {
   const query = (req.query.q as string)?.toLowerCase();
 
   if (!query) {res.json([]); return;} // no query
@@ -50,7 +50,7 @@ app.get("/api/search", async (req: Request, res: Response) => {
 // add song to queue
 // If successful, returns status 201 and json of qEntry
 // Otherwise, returns status 404
-app.post("/api/queue", async (req: Request, res: Response) => {
+app.post("/api/queue", async (req: ExRequest, res: ExResponse) => {
   const {songId, uid} = req.body;
   const song = SONG_LIBRARY.find(s => s.id === songId);
   if (!uid) return res.status(400).send("No user provided");
@@ -74,7 +74,7 @@ app.post("/api/queue", async (req: Request, res: Response) => {
 // decrement song priority in queue (i.e. move it upward)
 // If successful, returns status 201.
 // Otherwise, returns status 404 if song not found; returns status 405 if song is first in queue and cannot change priority.
-app.put("/api/queue/:id/:uid", async (req: Request, res: Response) => {
+app.put("/api/queue/:id/:uid", async (req: ExRequest, res: ExResponse) => {
   const qidToBoost = parseInt(req.params.id);
   const {uid} = req.params;
 
@@ -111,7 +111,7 @@ app.put("/api/queue/:id/:uid", async (req: Request, res: Response) => {
 // DELETE
 // remove song from queue
 // Returns status 204
-app.delete("/api/queue/:id/:uid", async (req: Request, res: Response) => {
+app.delete("/api/queue/:id/:uid", async (req: ExRequest, res: ExResponse) => {
   const {id, uid} = req.params;
 
   if (!uid || uid === "undefined") {
