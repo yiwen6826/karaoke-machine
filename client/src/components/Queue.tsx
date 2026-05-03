@@ -5,8 +5,9 @@ import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
 import VideoPlayer from './VideoPlayer';
 import { useAuth } from "../auth/AuthUserProvider";
+import api from '../api';
 
-const API_URL = "http://localhost:8080/api";
+//const API_URL = "http://localhost:8080/api";
 interface qEntry {
     qid: number,
     songId: string,
@@ -39,7 +40,7 @@ const Queue = () => {
 
         if (term.length > 1) {
             try {
-                const response = await axios.get(API_URL+`/search?q=${term}`);
+                const response = await api.get(`/search?q=${term}`);
                 setSearchResults(response.data);
             } catch (e: any) {
                 console.error("Search error:", e);
@@ -54,7 +55,7 @@ const Queue = () => {
 
     const fetchQueue = async () => {
         if (!user?.uid) return;
-        const response = await axios.get(API_URL + "/queue/" + user?.uid);
+        const response = await api.get("/queue/" + user?.uid);
         setQueue(response.data);
     }
 
@@ -77,7 +78,7 @@ const Queue = () => {
         }
         else {
             try {
-                await axios.post(API_URL+"/queue/", {songId: song.id, uid: user?.uid});
+                await api.post("/queue/", {songId: song.id, uid: user?.uid});
 
                 setSearchTerm('');
                 setSearchResults([]);
@@ -106,7 +107,7 @@ const Queue = () => {
             fetchQueue();
         } else {
             try {
-                await axios.delete(API_URL+"/queue/"+queueId+"/"+user?.uid);
+                await api.delete("/queue/"+queueId+"/"+user?.uid);
 
                 fetchQueue();
             } catch (e: any) {
@@ -123,7 +124,7 @@ const Queue = () => {
             fetchQueue();
         } else {
             try {
-                await axios.delete(API_URL+"/queue/"+queue[0].qid+"/"+user?.uid);
+                await api.delete("/queue/"+queue[0].qid+"/"+user?.uid);
 
                 fetchQueue();
             } catch (e: any) {
@@ -151,7 +152,7 @@ const Queue = () => {
         }
         else {
             try {
-                await axios.put(API_URL+"/queue/"+queueId+"/"+user?.uid);
+                await api.put("/queue/"+queueId+"/"+user?.uid);
 
                 fetchQueue();
             } catch (e: any) {

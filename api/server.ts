@@ -22,6 +22,10 @@ const getFirestoreQueue = async () => {
   return snapshot.docs.map(doc => ({qid: 0, ... doc.data()}));
 }
 
+app.use(cors({
+  origin: ["http://localhost:5173", "https://karaoke-machine.vercel.app"]
+}));
+
 // GET
 // send sorted queue of each user (min priority queue i.e. lowest priority first)
 // needed for updating gui
@@ -138,8 +142,13 @@ app.delete("/api/queue/:id/:uid", async (req, res) => {
   return res.sendStatus(204);
 })
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
-
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}`);
+// });
+if (process.env.NODE_ENV !== "production") {
+  const port = 8080;
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
+}
 export default app;
