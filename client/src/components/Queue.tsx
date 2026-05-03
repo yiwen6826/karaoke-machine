@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { CircleArrowUp } from 'lucide-react';
 import { CircleX } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
-import axios from 'axios';
 import VideoPlayer from './VideoPlayer';
 import { useAuth } from "../auth/AuthUserProvider";
 import api from '../api';
