@@ -1,10 +1,10 @@
-import express, { Express } from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import { SONG_LIBRARY } from "./constants/song-library";
 import { db } from './firebase';
 import { FieldValue } from 'firebase-admin/firestore';
 
-const app: Express = express();
+const app: Application = express();
 const port = 8080;
 
 app.use(cors());
