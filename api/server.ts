@@ -19,7 +19,7 @@ type queueEntry = {
 
 const getFirestoreQueue = async () => {
   const snapshot = await db.collection("queue").get();
-  return snapshot.docs.map(doc => ({qid: 0, ... doc.data()}));
+  return snapshot.docs.map((doc: any) => ({qid: 0, ... doc.data()}));
 }
 
 app.use(cors({
@@ -135,7 +135,7 @@ app.delete("/api/queue/:id/:uid", async (req: any, res: any) => {
   await snapshot.docs[0].ref.delete();
 
   const batch = db.batch();
-  greaterPrioritySnapshot.forEach((doc) => {
+  greaterPrioritySnapshot.forEach((doc: any) => {
     batch.update(doc.ref, {priority: FieldValue.increment(-1)})
   })
   await batch.commit();
