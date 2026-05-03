@@ -3,9 +3,9 @@ import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "../firebase.ts";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../auth/AuthUserProvider.tsx';
-import axios from 'axios';
+import api from '../api';
 
-const API_URL = "http://localhost:8080/api";
+//const API_URL = "http://localhost:8080/api";
 
 const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
   const [urls, setUrls] = useState<string[]>([]);
@@ -21,7 +21,7 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
       const songId = imageId.replace(/\.(jpg|jpeg)$/i, "");
 
       if (user?.uid) {
-        await axios.post(API_URL+"/queue/", {songId: songId, uid: user?.uid})
+        await api.post("/queue/", {songId: songId, uid: user?.uid})
         .then(res => {if (res.status == 201) navigate('/sing');});
       }
       else alert("Guest users must queue manually");
