@@ -54,9 +54,9 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
           <img src={url} alt={`Thumbnail ${index}`} />
         </button>
         ) : (
-          <div className="thumbnail">
+          <button key={index} className="thumbnail" onClick={() => handleThumbnailClick(url)}>
             <img src={url} alt={`Thumbnail ${index}`} />
-          </div>
+          </button>
         )
       ))}
     </div>
