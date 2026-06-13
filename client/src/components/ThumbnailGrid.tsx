@@ -12,6 +12,10 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
   const navigate = useNavigate();
   const {user} = useAuth();
 
+  const [vidCount, setVidCount] = useState<number>(0);
+  const [loadedCount, setLoadedCount] = useState<number>(0);
+  const isFullyLoaded = urls.length > 0 && vidCount > 0 && loadedCount == vidCount;
+
   const handleThumbnailClick = async (url : string) => {
     try {
       const urlObj = new URL(url);
@@ -31,9 +35,16 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
     }
   }
 
+  const handleImageLoad = () => {
+    setLoadedCount((prev) => prev+1);
+  }
+
   useEffect(() => {
-    const fetchUrls = async () => {
+    const fetchData = async () => {
       try {
+        const vidCountResponse = await api.get("/vid-count");
+        setVidCount(vidCountResponse.data);
+
         const folderRef = ref(storage, folderPath);
         const result = await listAll(folderRef);
         const urls = await Promise.all(result.items.map(itemRef => getDownloadURL(itemRef)))
@@ -43,22 +54,37 @@ const ThumbnailGrid = ({ folderPath }: { folderPath : string}) => {
       }
     };
 
-    if (folderPath) fetchUrls();
+    if (folderPath) fetchData();
   }, [folderPath]);
 
   return (
-    <div className='grid-container'>
-      {urls.map((url, index) => (
-        user ? (
-        <button key={index} className="thumbnail-btn" onClick={() => handleThumbnailClick(url)}>
-          <img src={url} alt={`Thumbnail ${index}`} />
-        </button>
-        ) : (
-          <button key={index} className="thumbnail" onClick={() => handleThumbnailClick(url)}>
-            <img src={url} alt={`Thumbnail ${index}`} />
+    <div className='grid-wrapper'>
+      {!isFullyLoaded && (
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>Tuning the Karaoke Machine...</p>
+          <span className="loading-progress">
+            {loadedCount} / {vidCount || '...'} Loaded
+          </span>
+        </div>
+      )}
+
+      <div className={`grid-container ${isFullyLoaded ? '' : 'hidden'}`}>
+        {urls.map((url, index) => (
+          <button 
+            key={index} 
+            className={user ? "thumbnail-btn" : "thumbnail"} 
+            onClick={() => handleThumbnailClick(url)}
+          >
+            <img 
+              src={url} 
+              alt={`Thumbnail ${index}`} 
+              onLoad={handleImageLoad}
+              loading="eager"
+            />
           </button>
-        )
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

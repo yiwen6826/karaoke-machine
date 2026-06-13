@@ -46,6 +46,12 @@ app.get("/api/search", async (req: any, res: any) => {
   res.json(matches);
 })
 
+// total number of videos in library
+// needed for thumbnail loading screen (match loaded vids with total vids)
+app.get("/api/vid-count", async (req: any, res: any) => {
+  res.json(SONG_LIBRARY.length);
+})
+
 // POST
 // add song to queue
 // If successful, returns status 201 and json of qEntry

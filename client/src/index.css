@@ -149,6 +149,55 @@ button:active {
     flex-shrink: 0;
 }
 
+.grid-wrapper {
+    position: relative;
+    min-height: 100vh;
+    background-color: #131320;
+    color: #ffffff;  
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: "Tilt Neon", system-ui;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #222;
+    border-top: 4px solid #ff00ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.loading-progress {
+    font-size: 0.85rem;
+    font-family: "Tilt Neon", system-ui;
+    color: #888;
+    margin-top: 5px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -158,6 +207,13 @@ button:active {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+}
+
+.grid-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
 }
 
 .thumbnail-btn {
